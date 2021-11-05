@@ -1,24 +1,54 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { featchWeather } from './api/fetchWeather';
 import './App.css';
 
 function App() {
+  
+  const [query, setQuery] = useState("")
+  const [weather , setWeather] = useState({})
+  const search = async (e) =>{
+      if(e.key === 'Enter'){
+        const data = await featchWeather(query);
+        setWeather(data);
+        console.log(weather);
+      }
+  }
+  const queryHandler = (e) => {
+    setQuery(e.target.value)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <React.Fragment>
+      <div className="title">
+      <h1>World Weather - PWA</h1>
+      </div>
+    <div className="mainContainer">
+      <input 
+        type="text"
+        className="search"
+        placeholder="Write city..."
+        onChange={queryHandler}
+        onKeyPress={search}
+      />
     </div>
+    <div className="output">
+      {weather.main && (
+        <div className="city">
+          <h2 className="city-name">
+            <span>{weather.name}</span>
+            <sup>{weather.sys.country}</sup>
+          </h2>
+          <div className="city-temp">
+            {Math.round(weather.main.temp)}
+            <sup>&deg;C</sup>
+          </div>
+          <div className="info">
+            <img src={`https:/openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
+            <p>{weather.weather[0].description}</p>
+          </div>
+        </div>
+      )}
+    </div>
+    </React.Fragment>
   );
 }
 
