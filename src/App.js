@@ -19,7 +19,8 @@ function App() {
   return (
     <React.Fragment>
       <div className="title">
-      <h1>World Weather - PWA</h1>
+      <h1>All Country Weather
+      </h1>
       </div>
     <div className="mainContainer">
       <input 
